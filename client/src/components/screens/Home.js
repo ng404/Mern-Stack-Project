@@ -2,6 +2,7 @@ import React from 'react'
 const Home=()=> {
     return (
      <div className="home">
+
          <div className="card home-card">
             <h5>Mukesh</h5>
            <div className="card-image"> {/* the css is defined in  materialize for card-image*/}
@@ -15,7 +16,7 @@ const Home=()=> {
              <input type="text" placeholder="add a comment" />
             </div>
          </div>
-
+        
          <div className="card home-card">
             <h5>Mukesh</h5>
            <div className="card-image"> {/* the css is defined in  materialize for card-image*/}
