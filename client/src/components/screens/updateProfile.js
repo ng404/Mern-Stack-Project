@@ -34,6 +34,11 @@ const UpdateProfile=()=> {
         })
     }
     const uploadFields=()=>{
+        if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email))
+        {
+            M.toast({html:"Invalid Email !!",classes:"#c62828 red darken-3"})
+            return
+        }
         fetch("/updateProfile",{
             method:"put",
             headers:{"Content-Type":"application/json",
@@ -58,18 +63,14 @@ const UpdateProfile=()=> {
             console.log(err)
         })
     }
-    const editProfile=()=>{
-        if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email))
-        {
-            M.toast({html:"Invalid Email !!",classes:"#c62828 red darken-3"})
-            return
-        }
+    const editProfile=(a,b)=>{
         if(name==""){
         setName(state?state.name:"")
         }
         if(email==""){
-        setEmail(state?state.email:"")
+            setEmail(state?state.email:"")
         }
+        
         if(image){
             uploadPic()
         }
@@ -96,7 +97,7 @@ const UpdateProfile=()=> {
             </div>
             </div>
             <button className="btn waves-effect waves-light #1e88e5 blue darken-1"
-            onClick={()=>editProfile()}>
+            onClick={()=>editProfile(state?state.name:"",state?state.email:"")}>
                 Edit
             </button>
         </div>

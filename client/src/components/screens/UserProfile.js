@@ -1,6 +1,6 @@
 import React,{useEffect,useState,useContext} from 'react'
 import {UserContext} from '../../App'
-import {useParams,useHistory} from 'react-router-dom'
+import {useParams,useHistory,Link} from 'react-router-dom'
 import M from 'materialize-css'
 const UserProfile=()=> {
     const history=useHistory()
@@ -22,7 +22,6 @@ const UserProfile=()=> {
         M.toast({html:"User not exit",classes:"#c62828 red darken-3"})
            history.push('/')
     }
-
     const followuser=()=>{
 
         fetch('/follow',{
@@ -103,12 +102,13 @@ const UserProfile=()=> {
                 {showFollow?<button className="btn waves-effect waves-light #1e88e5 blue darken-1" style={{margin:"10px 90px"}}
             onClick={()=>followuser()}>
                 Follow
-            </button>:<button className="btn waves-effect waves-light #1e88e5 blue darken-1"style={{margin:"10px 90px"}}
+            </button>:<button className="btn waves-effect waves-light"style={{margin:"10px 90px"}}
             onClick={()=>unfollowuser()}>
                 UnFollow
             </button>}
-                
-            
+            <Link to={"/message/"+userid}><button className="btn waves-effect waves-light #e0e0e0 grey lighten-2" style={{marginLeft:"-47px",color:"black"}}>
+                Message
+            </button></Link>
             </div>
         </div>
         

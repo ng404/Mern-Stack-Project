@@ -3,7 +3,6 @@ import M from 'materialize-css'
 import {useHistory} from 'react-router-dom'
 const CreatePost=()=> {
     const history=useHistory()
-    const [title,setTitle]=useState("")
     const [body,setBody]=useState("")
     const [image,setImage]=useState("")
     const [url,setUrl]=useState("")
@@ -14,7 +13,6 @@ const CreatePost=()=> {
                 headers:{"Content-Type":"application/json",
             "Authorization":"Bearer "+localStorage.getItem("jwt")},
                 body:JSON.stringify({
-                    title,
                     body,
                     url
                 })
@@ -35,6 +33,7 @@ const CreatePost=()=> {
         }
     },[url])
     const PostDetails=()=>{
+      
         const data=new FormData()//for uploading files we use Form Data
         data.append("file",image)
         data.append("upload_preset","invisible")
@@ -50,13 +49,10 @@ const CreatePost=()=> {
         .catch(err=>{
             console.log(err)
         })
-        
     }
     return (
         <div className="card input-field"
         style={{margin:"100px auto",maxWidth:"500px",padding:"20px",textAlign:"center"}}>
-            <input type="text" placeholder="title" value={title}
-            onChange={(e)=>setTitle(e.target.value)}/>
             <textarea id="textarea1" className="materialize-textarea" placeholder="body" value={body}
             onChange={(e)=>setBody(e.target.value)}/>
             <div className="file-field input-field">

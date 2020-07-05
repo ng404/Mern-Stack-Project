@@ -48,12 +48,36 @@ a{
 .item{
   width:30%;
 }
+.message-home-card{
+  max-width: 500px;
+  height: 610px;
+  margin:100px auto;
+}
 .home-card{
   max-width: 500px;
   height: max-content;
   margin:100px auto;
 }
-
+.message-card{
+  max-width: auto;
+  height: 100px;
+  margin:10px auto;
+  padding-top: 5px;
+}
+.personal-message-card{
+  max-width: 500px;
+  height: 600px;
+  margin:100px auto;
+}
+.main-message-card{
+  max-width: 500px;
+  height: 500px;
+}
+.user-message-card{
+  max-width: auto;
+  height: 60px;
+  margin-bottom: -1px;
+}
 #toast-container{
   top:30px !important;
   right:20px !important;

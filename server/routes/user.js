@@ -3,6 +3,7 @@ const router =express.Router()
 const mongoose=require('mongoose')
 const User=mongoose.model('User')
 const Post=mongoose.model("Post")
+const Message=mongoose.model("Message")
 const requireLogin=require('../middleware/requireLogin')
 
 
@@ -23,8 +24,6 @@ router.get('/user/:id',requireLogin,(req,res)=>{
         return res.status(422).json({error:"User not find"})
     })
 })
-
-
 router.put('/follow',requireLogin,(req,res)=>{
     User.findByIdAndUpdate(req.body.followId,{$push:{followers:req.user._id}},{new:true},
         (err,result)=>{
@@ -41,7 +40,6 @@ router.put('/follow',requireLogin,(req,res)=>{
                 })
     })
 })
-
 router.put('/unfollow',requireLogin,(req,res)=>{
     User.findByIdAndUpdate(req.body.unfollowId,{
         $pull:{followers:req.user._id}
@@ -58,7 +56,6 @@ router.put('/unfollow',requireLogin,(req,res)=>{
                 })
     })
 })
-
 router.put('/updateProfile',requireLogin,(req,res)=>{
     User.findByIdAndUpdate(req.user._id,{$set:{pic:req.body.pic,name:req.body.name,email:req.body.email}},{new:true})
     .select("-password")
@@ -68,7 +65,6 @@ router.put('/updateProfile',requireLogin,(req,res)=>{
         return  res.status(422).json({error:err})
      })
 })
-
 router.get('/getFollowingList',requireLogin,(req,res)=>{
     User.findById(req.user._id)
     .select("following")
@@ -89,4 +85,101 @@ router.get('/getFollowersList',requireLogin,(req,res)=>{
         res.status(422).json({error:err})
     })
 })
-module.exports =router
+router.post('/sendMessage',requireLogin,(req,res)=>{
+    if(!req.body.text || !req.body.toId){
+        return res.status(422).json({error:"please add all the fields.."})
+    }
+    const message =new Message({
+        to:req.body.toId,
+        text:req.body.text,
+        sendBy:req.user._id
+    })
+    message.save().then(result=>{
+        Message.find({$or:[{to:req.body.toId,sendBy:req.user._id},{to:req.user._id,sendBy:req.body.toId}]})
+        .populate("to","_id name pic")
+        .populate("sendBy","_id name pic")
+        .sort({ createdAt : 1})
+        .then(result=>{
+            res.json(result)
+        })
+    }).catch(err=>{
+        console.log(err)
+    })
+})
+router.get('/getMessage/:id',requireLogin,(req,res)=>{
+    Message.find({$or:[{to:req.params.id,sendBy:req.user._id},{to:req.user._id,sendBy:req.params.id}]})
+    .populate("to","_id name pic")
+    .populate("sendBy","_id name pic")
+    .sort({ createdAt : 1})
+    .then(result=>{
+        res.json(result)
+    }).catch(err=>{
+        console.log(err)
+    })
+})
+router.get('/getuserMessageList',requireLogin,(req,res)=>{
+    const userList1=[];
+    const userList=[];
+    Message.find({sendBy:req.user._id})
+    .populate("to","_id name pic")
+    .populate("sendBy","_id name pic")
+    .sort({ createdAt : 1})
+    .then(result=>{
+        result.forEach(function(item){
+            const messageList=[]
+            result.forEach(function(item1){
+                if(item.to._id.toString()===item1.to._id.toString())
+                    messageList.push(item1)
+            })
+                        if(!userList.includes(messageList[messageList.length-1]))
+                        userList.push(messageList[messageList.length-1])          
+        })
+        Message.find({to:req.user._id})
+        .populate("to","_id name pic")
+        .populate("sendBy","_id name pic")
+        .sort({ createdAt : 1})
+        .then(result=>{
+        result.forEach(function(item){
+            const messageList=[]
+            result.forEach(function(item1){
+                if(item.sendBy._id.toString()===item1.sendBy._id.toString())
+                    messageList.push(item1)
+            })
+            if(!userList1.includes(messageList[messageList.length-1]))
+                userList1.push(messageList[messageList.length-1])     
+        })
+        const userList2=[];
+        userList.forEach(function(item){
+            var flag=0;
+            userList1.forEach(function(item1){
+               if(item.to._id.toString()===item1.sendBy._id.toString())
+               {
+                if(item.createdAt<=item1.createdAt)
+                     userList2.push(item1)
+                else
+                    userList2.push(item)
+                flag=0;
+                userList1.splice(userList1.indexOf(item1), 1);
+                return
+               }
+               else{
+                   flag=1;
+               }
+            })
+             if(flag==1)
+                userList2.push(item)
+        })
+        userList1.forEach(function(item){
+            userList2.push(item)
+        })
+        userList2.sort(function(a, b) {
+            var dateA = new Date(a.createdAt), dateB = new Date(b.createdAt);
+            return dateB - dateA;
+        });
+        return res.json(userList2)
+        }) 
+    }).catch(err=>{
+        console.log(err)
+    })
+})
+module.exports =router  

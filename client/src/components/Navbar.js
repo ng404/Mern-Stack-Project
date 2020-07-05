@@ -18,6 +18,7 @@ const NavBar =()=> {
     <li  key="profile"><Link to="/profile">{window.innerWidth<=750?<i className="material-icons">account_circle</i>:""}Profile</Link></li>,
             <li key="post"><Link to="/createPost">{window.innerWidth<=750?<i className="material-icons">add_to_photos</i>:""}Create Post</Link></li>,
             <li  key="following"><Link to="/myFollowingPost">{window.innerWidth<=750?<i className="material-icons">monochrome_photos</i>:""}Following Post</Link></li>,
+            <li  key="messages"><Link to="/messages">{window.innerWidth<=750?<i className="material-icons">message</i>:""}Messages</Link></li>,
             <li key="logout">
              <button className="btn waves-effect waves-light #d32f2f red darken-1"
             onClick={()=>{

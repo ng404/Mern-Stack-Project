@@ -112,10 +112,10 @@ const Profile=()=> {
                                 <h6 id={item._id}>{item.name}</h6>
                             </div>
                            {checker?"":<div>
-                            <button className="btn waves-effect waves-light #1e88e5 blue darken-1"
-                             style={{margin:"10px -33px",background:"white"}} onClick={()=>unfollowuser(item._id)
+                            <button className="btn waves-effect waves-light"
+                             style={{margin:"10px -33px"}} onClick={()=>unfollowuser(item._id)
                                 }>
-                                    Following
+                                    UnFollow
                               </button> 
                             </div>}
                         </div>

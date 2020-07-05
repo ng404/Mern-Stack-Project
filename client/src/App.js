@@ -11,6 +11,8 @@ import {reducer,initialState} from './reducers/userReducer'
 import UserProfile from './components/screens/UserProfile';
 import SubscribeUserPost from './components/screens/SubscribeUserPost';
 import UpdateProfile from './components/screens/updateProfile'
+import Messages from './components/screens/messages';
+import UserMessages from './components/screens/UserMessages'
 
 
 export const  UserContext=React.createContext()
@@ -53,6 +55,12 @@ const Routing =()=>{
     </Route>
     <Route path="/updateProfile">
       <UpdateProfile/>
+    </Route>
+    <Route path="/messages">
+      <Messages/>
+    </Route>
+    <Route path="/message/:id">
+      <UserMessages/>
     </Route>
     </Switch>
   )
