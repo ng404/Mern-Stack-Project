@@ -6,8 +6,6 @@ const Post=mongoose.model("Post")
 const Message=mongoose.model("Message")
 const requireLogin=require('../middleware/requireLogin')
 
-
-
 router.get('/user/:id',requireLogin,(req,res)=>{
     User.findOne({_id:req.params.id})
     .select("-password")
@@ -125,6 +123,7 @@ router.get('/getuserMessageList',requireLogin,(req,res)=>{
     .populate("sendBy","_id name pic")
     .sort({ createdAt : 1})
     .then(result=>{
+  
         result.forEach(function(item){
             const messageList=[]
             result.forEach(function(item1){
@@ -134,12 +133,13 @@ router.get('/getuserMessageList',requireLogin,(req,res)=>{
                         if(!userList.includes(messageList[messageList.length-1]))
                         userList.push(messageList[messageList.length-1])          
         })
+      
         Message.find({to:req.user._id})
         .populate("to","_id name pic")
         .populate("sendBy","_id name pic")
         .sort({ createdAt : 1})
         .then(result=>{
-        result.forEach(function(item){
+            result.forEach(function(item){
             const messageList=[]
             result.forEach(function(item1){
                 if(item.sendBy._id.toString()===item1.sendBy._id.toString())
@@ -149,6 +149,12 @@ router.get('/getuserMessageList',requireLogin,(req,res)=>{
                 userList1.push(messageList[messageList.length-1])     
         })
         const userList2=[];
+        if(userList1.length===0){
+            userList.forEach(function(item){
+                userList2.push(item)
+            })
+        }
+        else{
         userList.forEach(function(item){
             var flag=0;
             userList1.forEach(function(item1){
@@ -172,6 +178,7 @@ router.get('/getuserMessageList',requireLogin,(req,res)=>{
         userList1.forEach(function(item){
             userList2.push(item)
         })
+    }
         userList2.sort(function(a, b) {
             var dateA = new Date(a.createdAt), dateB = new Date(b.createdAt);
             return dateB - dateA;
@@ -181,5 +188,51 @@ router.get('/getuserMessageList',requireLogin,(req,res)=>{
     }).catch(err=>{
         console.log(err)
     })
+})
+router.delete('/deleteMessage',requireLogin,(req,res)=>{
+    Message.findOne({_id:req.body.messageId})
+    .populate("to","_id name pic")
+    .populate("sendBy","_id name pic")
+    .exec((err,message)=>{
+        if(err || !message){
+            return res.status(422).json({error:err})
+        }
+        if(message.sendBy._id.toString() === req.user._id.toString()){
+            message.remove()
+        .then(result=>{
+            res.json(result)
+        }).catch(err=>{
+            console.log(err)
+        })       
+    }
+    })
+})
+router.put('/likeMessage',requireLogin,(req,res)=>{
+    Message.findByIdAndUpdate(req.body.messageId,{isLiked:true},{new:true}
+        ).populate("to","_id name pic")
+        .populate("sendBy","_id name pic")
+        .exec((err,result)=>{
+            if(err){
+                return res.status(422).json({error:err})
+            }
+            else{
+                console.log(result)
+                res.json(result)
+            }
+        })
+})
+router.put('/unlikeMessage',requireLogin,(req,res)=>{
+    Message.findByIdAndUpdate(req.body.messageId,{isLiked:false},{new:true}
+        ).populate("to","_id name pic")
+        .populate("sendBy","_id name pic")
+        .exec((err,result)=>{
+            if(err){
+                return res.status(422).json({error:err})
+            }
+            else{
+                console.log(result)
+                res.json(result)
+            }
+        })
 })
 module.exports =router  

@@ -12,6 +12,10 @@ const messageSchema=new mongoose.Schema({
     sendBy:{
         type:ObjectId,
         ref:"User"
+    },
+    isLiked:{
+        type:Boolean,
+        default:false
     }
 },
 { timestamps: true }
