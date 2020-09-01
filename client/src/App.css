@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap');
+
+a{
+  color:black !important
+}
+
+.brand-logo,h2{
+  margin-left: 20px;
+  margin-top: -20px;
+  font-family: 'Grand Hotel', cursive;
+}
+
+.auth-card{
+  padding:20px;
+  padding-top: 60px;
+  text-align: center;
+  max-width: 400px;
+  margin:10px auto;
+}
+
+.mycard{
+  margin-top: 100px; 
+}
+
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid #033eff !important;
+  box-shadow: 0 1px 0 0 #033eff !important;
+}
+.input-field input[type=password]:focus {
+  border-bottom: 1px solid #033eff !important;
+  box-shadow: 0 1px 0 0 #033eff !important;
+}
+.input-field input[type=email]:focus {
+  border-bottom: 1px solid #033eff !important;
+  box-shadow: 0 1px 0 0 #033eff !important;
+}
+.input-field input[type=file]:focus {
+  border-bottom: 1px solid #033eff !important;
+  box-shadow: 0 1px 0 0 #033eff !important;
+}
+
+.gallery{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.item{
+  width:30%;
+}
+.message-home-card{
+  max-width: 500px;
+  height: 610px;
+  margin:100px auto;
+}
+.home-card{
+  max-width: 500px;
+  height: max-content;
+  margin:100px auto;
+}
+.message-card{
+  max-width: auto;
+  height: 100px;
+  margin:10px auto;
+  padding-top: 5px;
+}
+.personal-message-card{
+  max-width: 500px;
+  height: 600px;
+  margin:100px auto;
+}
+.main-message-card{
+  max-width: 500px;
+  height: 500px;
+}
+.user-message-card{
+  max-width: auto;
+  height: 60px;
+  margin-bottom: -1px;
+}
+#toast-container{
+  top:30px !important;
+  right:20px !important;
+  left: auto !important;
+  
+}
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--offWhite);
+  z-index: 1;
+}
+
+.material-icons:hover{
+  cursor: pointer;
+}
+
+.a:hover{
+  cursor: pointer;
+}
