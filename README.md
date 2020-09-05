@@ -27,7 +27,7 @@ Features:->
 
 10.>u can see all the post for all user
 
-11.> u cna also see the post for following user in separate section
+11.> u can also see the post for following user in separate section
 
 12.> like and unlike the comment of the post
 
